@@ -11,6 +11,7 @@ interface TuttoState {
   deletePlayer: (name: string) => void;
   newGame: () => void;
   updateCurrentCard: (index: number) => void;
+  addScore: (playerName: string, score: number) => void;
   endGame: () => void;
 }
 
@@ -36,6 +37,19 @@ export const useGameStore = create<TuttoState>()(
       updateCurrentCard: (index) => {
         set({
           currentCard: index,
+        });
+      },
+      addScore: (playerName, score) => {
+        set((state) => {
+          const playerIndex = state.players.findIndex(
+            (p) => p.name === playerName
+          );
+          if (playerIndex === -1) return state;
+
+          const updatedPlayers = [...state.players];
+          updatedPlayers[playerIndex].score.push(score);
+
+          return { players: updatedPlayers };
         });
       },
       endGame: () => {
