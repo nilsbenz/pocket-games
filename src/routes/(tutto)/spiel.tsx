@@ -8,8 +8,8 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import Card from "./-components/Card";
-import { useGameStore } from "./-lib/store";
 import PlayerDialog from "./-components/PlayerDialog";
+import { useGameStore } from "./-lib/store";
 import {
   Dialog,
   DialogClose,
@@ -40,7 +40,7 @@ function RouteComponent() {
 
   if (currentCard >= cards.length) {
     return (
-      <Layout>
+      <Layout headerTitle="Tutto">
         <div className="mx-auto flex w-full max-w-md grow flex-col">
           <div className="flex grow items-center justify-center">
             <p className="text-4xl font-medium">Spiel beendet</p>
@@ -72,22 +72,28 @@ function RouteComponent() {
   }
 
   return (
-    <Layout>
+    <Layout headerTitle="Tutto">
       <div className="mx-auto flex w-full max-w-md grow flex-col space-y-8">
         <div className="space-y-4">
           <AnimatePresence mode="popLayout">
-            <motion.div
-              key={currentCard}
-              initial={{ opacity: 0, x: direction === "forwards" ? 160 : 0 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: direction === "forwards" ? 0 : 160 }}
-              transition={{
-                duration: 0.4,
-                ease: direction === "forwards" ? "backOut" : "backIn",
-              }}
-            >
-              <Card index={currentCard} />
-            </motion.div>
+            {currentCard >= 0 ? (
+              <motion.div
+                key={currentCard}
+                initial={{ opacity: 0, x: direction === "forwards" ? 160 : 0 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: direction === "forwards" ? 0 : 160 }}
+                transition={{
+                  duration: 0.4,
+                  ease: direction === "forwards" ? "backOut" : "backIn",
+                }}
+              >
+                <Card index={currentCard} />
+              </motion.div>
+            ) : (
+              <div className="bg-card text-card-foreground flex aspect-video items-center justify-center rounded-lg border-4">
+                <p className="text-xl font-semibold">Tutto</p>
+              </div>
+            )}
           </AnimatePresence>
           <div className="grid grid-cols-2 gap-4">
             <Button
@@ -98,7 +104,7 @@ function RouteComponent() {
                   updateCurrentCard(currentCard - 1);
                 }, 0);
               }}
-              disabled={currentCard === 0}
+              disabled={currentCard <= 0}
             >
               <ChevronLeftIcon strokeWidth={2.25} />
               Zurück

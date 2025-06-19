@@ -34,8 +34,8 @@ export default function Start() {
   }
 
   return (
-    <Layout>
-      <div className="mx-auto w-full max-w-md space-y-8">
+    <Layout headerTitle="Tutto">
+      <div className="mx-auto flex w-full max-w-md grow flex-col space-y-8">
         <h2 className="text-center text-4xl font-medium">Tutto</h2>
         <form
           onSubmit={(e) => {
@@ -83,7 +83,7 @@ export default function Start() {
           </Button>
         </form>
 
-        <div className="divide-y-2">
+        <div className="grow divide-y-2">
           {players.map((player) => (
             <div
               key={player.name}

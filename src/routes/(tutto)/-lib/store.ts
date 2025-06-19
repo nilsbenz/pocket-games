@@ -31,7 +31,7 @@ export const useGameStore = create<TuttoState>()(
           players: state.players.filter((p) => p.name !== name),
         })),
       newGame: () => {
-        set({ cards: getShuffledCards(), currentCard: 0 });
+        set({ cards: getShuffledCards(), currentCard: -1 });
       },
       updateCurrentCard: (index) => {
         set({
