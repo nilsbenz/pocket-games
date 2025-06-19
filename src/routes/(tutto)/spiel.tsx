@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import Card from "./-components/Card";
 import { useGameStore } from "./-lib/store";
+import PlayerDialog from "./-components/PlayerDialog";
 import {
   Dialog,
   DialogClose,
@@ -27,7 +28,8 @@ export const Route = createFileRoute("/(tutto)/spiel")({
 });
 
 function RouteComponent() {
-  const { currentCard, endGame, cards, updateCurrentCard } = useGameStore();
+  const { players, currentCard, endGame, cards, updateCurrentCard } =
+    useGameStore();
   const [direction, setDirection] = useState<"forwards" | "backwards">(
     "forwards"
   );
@@ -48,7 +50,9 @@ function RouteComponent() {
               variant="secondary"
               onClick={() => {
                 setDirection("forwards");
-                updateCurrentCard(currentCard - 1);
+                setTimeout(() => {
+                  updateCurrentCard(currentCard - 1);
+                }, 0);
               }}
               disabled={currentCard === 0}
             >
@@ -70,7 +74,7 @@ function RouteComponent() {
   return (
     <Layout>
       <div className="mx-auto flex w-full max-w-md grow flex-col space-y-8">
-        <div className="grow space-y-4">
+        <div className="space-y-4">
           <AnimatePresence mode="popLayout">
             <motion.div
               key={currentCard}
@@ -112,6 +116,13 @@ function RouteComponent() {
               <ChevronRightIcon strokeWidth={2.25} />
             </Button>
           </div>
+        </div>
+        <div className="flex grow flex-col divide-y-2">
+          {players.map((player) => (
+            <div key={player.name} className="py-0.5">
+              <PlayerDialog player={player} />
+            </div>
+          ))}
         </div>
         <Dialog>
           <DialogTrigger asChild>

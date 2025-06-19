@@ -48,13 +48,15 @@ export default function Start() {
           <form.Field
             name="newPlayer"
             validators={{
-              onChange: ({ value }) =>
+              onChangeAsync: ({ value }) =>
                 !value
                   ? "Bitte gib einen Namen ein."
                   : value.length < 2
                     ? "Der Name muss mindestens 2 Zeichen lang sein."
-                    : undefined,
-              onChangeAsyncDebounceMs: 500,
+                    : players.some((p) => p.name === value)
+                      ? "Dieser Name ist bereits vergeben."
+                      : undefined,
+              onChangeAsyncDebounceMs: 200,
             }}
             children={(field) => (
               <div className="grow">
@@ -85,7 +87,7 @@ export default function Start() {
           {players.map((player) => (
             <div
               key={player.name}
-              className="flex items-center justify-between"
+              className="flex items-center justify-between py-0.5"
             >
               <p>{player.name}</p>
               <Button

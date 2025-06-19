@@ -84,22 +84,24 @@ export default function Card({ index }: { index: number }) {
             colorClasses[card.variant]
           )}
         >
-          <div className="absolute top-1 left-1 flex size-9 items-center justify-center opacity-60">
-            <p className="text-lg font-semibold tabular-nums">{index + 1}</p>
-          </div>
+          <p className="absolute top-2 left-1/2 -translate-x-1/2 text-xl font-semibold">
+            {card.displayName}
+          </p>
           <div className="flex w-full items-center justify-between px-4">
             <p className="text-xl font-semibold">{values[card.variant]}</p>
             <Icon className="size-16 sm:size-20" strokeWidth={2.25} />
             <p className="text-xl font-semibold">{values[card.variant]}</p>
           </div>
-          <p className="absolute bottom-2 left-1/2 -translate-x-1/2 text-xl font-semibold">
-            {card.displayName}
+          <p className="absolute right-4 bottom-2 font-semibold tabular-nums opacity-60">
+            {index + 1} / {cards.length}
           </p>
         </button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{card.displayName}</DialogTitle>
+          <DialogTitle className="flex items-center gap-2">
+            <Icon className="size-6" strokeWidth={2.25} /> {card.displayName}
+          </DialogTitle>
           <DialogDescription>{card.description}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
