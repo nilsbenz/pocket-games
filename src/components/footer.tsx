@@ -28,9 +28,7 @@ function NavigationElement({ element }: { element: NavElement }) {
           className={cn(
             "flex flex-col items-center gap-y-[3px] text-sm transition-colors [&_img]:transition-shadow",
             "lg:flex-row lg:gap-x-3.5 lg:pl-3 lg:text-base",
-            isActive
-              ? "text-foreground font-semibold"
-              : "text-muted-foreground"
+            isActive ? "text-foreground font-semibold" : "text-muted-foreground"
           )}
         >
           <Icon className="size-6" strokeWidth={isActive ? 2.5 : 2} />
@@ -59,27 +57,3 @@ export default function Footer() {
     </>
   );
 }
-
-
-
-/**
- * 
- * 
- 
-import { DicesIcon } from "lucide-react";
-
-export default function Header() {
-  return (
-    <>
-      <header className="bg-secondary/70 text-secondary-foreground fixed top-0 z-40 flex h-14 w-full items-center gap-2 border-b-2 px-4 backdrop-blur-md">
-        <DicesIcon strokeWidth={2.5} className="text-primary" />
-        <h1 className="text-lg font-bold">Taschenspiele</h1>
-      </header>
-      <div className="mb-0.5 h-14" />
-    </>
-  );
-}
-
- * 
- * 
- */
