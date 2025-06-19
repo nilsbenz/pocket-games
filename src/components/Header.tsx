@@ -1,25 +1,13 @@
-import { Link } from "@tanstack/react-router";
+import { Gamepad2Icon } from "lucide-react";
 
 export default function Header() {
   return (
-    <header className="p-2 flex gap-2 bg-white text-black justify-between">
-      <nav className="flex flex-row">
-        <div className="px-2 font-bold">
-          <Link to="/">Home</Link>
-        </div>
-
-        <div className="px-2 font-bold">
-          <Link to="/demo/tanstack-query">TanStack Query</Link>
-        </div>
-
-        <div className="px-2 font-bold">
-          <Link to="/demo/form/simple">Simple Form</Link>
-        </div>
-
-        <div className="px-2 font-bold">
-          <Link to="/demo/form/address">Address Form</Link>
-        </div>
-      </nav>
-    </header>
+    <>
+      <header className="bg-secondary/70 text-secondary-foreground fixed top-0 z-40 flex h-14 w-full items-center gap-2 border-b-2 px-4 backdrop-blur-md">
+        <Gamepad2Icon strokeWidth={2.5} />
+        <h1 className="text-lg font-bold">Taschenspiele</h1>
+      </header>
+      <div className="mb-0.5 h-14" />
+    </>
   );
 }
