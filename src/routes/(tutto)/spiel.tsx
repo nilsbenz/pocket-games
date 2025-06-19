@@ -69,25 +69,30 @@ function RouteComponent() {
 
   return (
     <Layout>
-      <div className="mx-auto flex w-full max-w-md grow flex-col">
+      <div className="mx-auto flex w-full max-w-md grow flex-col space-y-8">
         <div className="grow space-y-4">
           <AnimatePresence mode="popLayout">
             <motion.div
               key={currentCard}
-              initial={{ opacity: 0, x: direction === "forwards" ? -160 : 160 }}
+              initial={{ opacity: 0, x: direction === "forwards" ? 160 : 0 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5, ease: "backOut" }}
+              exit={{ opacity: 0, x: direction === "forwards" ? 0 : 160 }}
+              transition={{
+                duration: 0.4,
+                ease: direction === "forwards" ? "backOut" : "backIn",
+              }}
             >
-              <Card variant={cards[currentCard].variant} />
+              <Card index={currentCard} />
             </motion.div>
           </AnimatePresence>
           <div className="grid grid-cols-2 gap-4">
             <Button
               variant="secondary"
               onClick={() => {
-                setDirection("forwards");
-                updateCurrentCard(currentCard - 1);
+                setDirection("backwards");
+                setTimeout(() => {
+                  updateCurrentCard(currentCard - 1);
+                }, 0);
               }}
               disabled={currentCard === 0}
             >
@@ -97,8 +102,10 @@ function RouteComponent() {
             <Button
               variant="secondary"
               onClick={() => {
-                setDirection("backwards");
-                updateCurrentCard(currentCard + 1);
+                setDirection("forwards");
+                setTimeout(() => {
+                  updateCurrentCard(currentCard + 1);
+                }, 0);
               }}
             >
               Weiter
@@ -108,7 +115,7 @@ function RouteComponent() {
         </div>
         <Dialog>
           <DialogTrigger asChild>
-            <Button>
+            <Button variant="secondary">
               <BanIcon strokeWidth={2.25} />
               Spiel beenden
             </Button>
