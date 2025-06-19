@@ -9,7 +9,7 @@ function App() {
   return (
     <Layout>
       <div className="flex grow items-center justify-center">
-        <h1>Pocket Games</h1>
+        <p>Tutto</p>
       </div>
     </Layout>
   );

@@ -1,16 +1,13 @@
+import "@fontsource-variable/lexend";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider, createRouter } from "@tanstack/react-router";
-
+import { registerSW } from "virtual:pwa-register";
 import * as TanStackQueryProvider from "./integrations/tanstack-query/root-provider.tsx";
-
-// Import the generated route tree
-import { routeTree } from "./routeTree.gen";
-
-import "./styles.css";
 import reportWebVitals from "./reportWebVitals.ts";
+import { routeTree } from "./routeTree.gen";
+import "./styles.css";
 
-// Create a new router instance
 const router = createRouter({
   routeTree,
   context: {
@@ -28,6 +25,17 @@ declare module "@tanstack/react-router" {
     router: typeof router;
   }
 }
+
+const updateSW = registerSW({
+  onNeedRefresh() {
+    if (confirm("New content available. Reload?")) {
+      updateSW(true);
+    }
+  },
+  onOfflineReady() {
+    console.log("offline ready");
+  },
+});
 
 // Render the app
 const rootElement = document.getElementById("app");

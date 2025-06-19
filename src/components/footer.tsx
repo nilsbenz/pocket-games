@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Link, useLocation } from "@tanstack/react-router";
 import type { LucideIcon } from "lucide-react";
-import { Dice3Icon } from "lucide-react";
+import { DicesIcon } from "lucide-react";
 import type { JSX } from "react";
 
 type NavElement = {
@@ -48,7 +48,7 @@ export default function Footer() {
         <ul className="mx-auto grid h-16 max-w-sm auto-cols-fr grid-flow-col items-center">
           <NavigationElement
             element={{
-              icon: Dice3Icon,
+              icon: DicesIcon,
               path: "/",
               text: "Tutto",
             }}
