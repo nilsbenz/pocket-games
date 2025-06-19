@@ -10,42 +10,32 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as tuttoIndexRouteImport } from './routes/(tutto)/index'
-import { Route as tuttoSpielRouteImport } from './routes/(tutto)/spiel'
 
 const tuttoIndexRoute = tuttoIndexRouteImport.update({
   id: '/(tutto)/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const tuttoSpielRoute = tuttoSpielRouteImport.update({
-  id: '/(tutto)/spiel',
-  path: '/spiel',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
-  '/spiel': typeof tuttoSpielRoute
   '/': typeof tuttoIndexRoute
 }
 export interface FileRoutesByTo {
-  '/spiel': typeof tuttoSpielRoute
   '/': typeof tuttoIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/(tutto)/spiel': typeof tuttoSpielRoute
   '/(tutto)/': typeof tuttoIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/spiel' | '/'
+  fullPaths: '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/spiel' | '/'
-  id: '__root__' | '/(tutto)/spiel' | '/(tutto)/'
+  to: '/'
+  id: '__root__' | '/(tutto)/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  tuttoSpielRoute: typeof tuttoSpielRoute
   tuttoIndexRoute: typeof tuttoIndexRoute
 }
 
@@ -58,18 +48,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof tuttoIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/(tutto)/spiel': {
-      id: '/(tutto)/spiel'
-      path: '/spiel'
-      fullPath: '/spiel'
-      preLoaderRoute: typeof tuttoSpielRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  tuttoSpielRoute: tuttoSpielRoute,
   tuttoIndexRoute: tuttoIndexRoute,
 }
 export const routeTree = rootRouteImport

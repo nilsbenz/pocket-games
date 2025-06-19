@@ -1,4 +1,4 @@
-import { Link, Navigate, createFileRoute } from "@tanstack/react-router";
+import { Link, Navigate } from "@tanstack/react-router";
 import {
   BanIcon,
   ChevronLeftIcon,
@@ -7,9 +7,9 @@ import {
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
-import Card from "./-components/Card";
-import PlayerDialog from "./-components/PlayerDialog";
-import { useGameStore } from "./-lib/store";
+import { useGameStore } from "../-lib/store";
+import Card from "./card";
+import PlayerDialog from "./player-dialog";
 import {
   Dialog,
   DialogClose,
@@ -23,11 +23,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout";
 
-export const Route = createFileRoute("/(tutto)/spiel")({
-  component: RouteComponent,
-});
-
-function RouteComponent() {
+export default function GameScreen() {
   const { players, currentCard, endGame, cards, updateCurrentCard } =
     useGameStore();
   const [direction, setDirection] = useState<"forwards" | "backwards">(
@@ -132,7 +128,15 @@ function RouteComponent() {
         </div>
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="secondary">
+            <Button
+              variant={
+                players.some(
+                  (p) => p.score.reduce((acc, curr) => acc + curr, 0) >= 6000
+                )
+                  ? "default"
+                  : "secondary"
+              }
+            >
               <BanIcon strokeWidth={2.25} />
               Spiel beenden
             </Button>

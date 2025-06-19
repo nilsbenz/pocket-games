@@ -17,7 +17,7 @@ interface TuttoState {
 
 export const useGameStore = create<TuttoState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       players: [],
       cards: [],
       currentCard: null,
@@ -32,9 +32,19 @@ export const useGameStore = create<TuttoState>()(
           players: state.players.filter((p) => p.name !== name),
         })),
       newGame: () => {
-        set({ cards: getShuffledCards(), currentCard: -1 });
+        set((state) => ({
+          cards: getShuffledCards(),
+          currentCard: -1,
+          players: state.players.map((p) => ({ ...p, score: [] })),
+        }));
       },
       updateCurrentCard: (index) => {
+        if (index >= get().cards.length) {
+          set((state) => ({
+            cards: [...state.cards, ...getShuffledCards()],
+            currentCard: index,
+          }));
+        }
         set({
           currentCard: index,
         });
