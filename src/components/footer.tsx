@@ -1,8 +1,8 @@
-import { cn } from "@/lib/utils";
 import { Link, useLocation } from "@tanstack/react-router";
-import type { LucideIcon } from "lucide-react";
 import { DicesIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import type { JSX } from "react";
+import { cn } from "@/lib/utils";
 
 type NavElement = {
   path: string;
