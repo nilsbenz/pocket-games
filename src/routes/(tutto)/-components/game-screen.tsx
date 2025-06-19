@@ -8,7 +8,6 @@ import {
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { useGameStore } from "../-lib/store";
-import Card from "./card";
 import PlayerDialog from "./player-dialog";
 import {
   Dialog,
@@ -83,7 +82,7 @@ export default function GameScreen() {
                   ease: direction === "forwards" ? "backOut" : "backIn",
                 }}
               >
-                <Card index={currentCard} />
+                {/* <Card index={currentCard} /> */}
               </motion.div>
             ) : (
               <div className="bg-card text-card-foreground flex aspect-video items-center justify-center rounded-lg border-4">
