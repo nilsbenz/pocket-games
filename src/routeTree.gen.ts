@@ -9,50 +9,68 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as tuttoIndexRouteImport } from './routes/(tutto)/index'
+import { Route as tuttoSpielRouteImport } from './routes/(tutto)/spiel'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
+const tuttoIndexRoute = tuttoIndexRouteImport.update({
+  id: '/(tutto)/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const tuttoSpielRoute = tuttoSpielRouteImport.update({
+  id: '/(tutto)/spiel',
+  path: '/spiel',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
+  '/spiel': typeof tuttoSpielRoute
+  '/': typeof tuttoIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
+  '/spiel': typeof tuttoSpielRoute
+  '/': typeof tuttoIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
+  '/(tutto)/spiel': typeof tuttoSpielRoute
+  '/(tutto)/': typeof tuttoIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/spiel' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/spiel' | '/'
+  id: '__root__' | '/(tutto)/spiel' | '/(tutto)/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
+  tuttoSpielRoute: typeof tuttoSpielRoute
+  tuttoIndexRoute: typeof tuttoIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
+    '/(tutto)/': {
+      id: '/(tutto)/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof tuttoIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(tutto)/spiel': {
+      id: '/(tutto)/spiel'
+      path: '/spiel'
+      fullPath: '/spiel'
+      preLoaderRoute: typeof tuttoSpielRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
+  tuttoSpielRoute: tuttoSpielRoute,
+  tuttoIndexRoute: tuttoIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
