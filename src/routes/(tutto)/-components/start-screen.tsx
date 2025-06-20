@@ -13,13 +13,22 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export default function StartScreen() {
-  const { players, addPlayer, deletePlayer, newGame } = useGameStore();
+  const { players, goal, addPlayer, deletePlayer, setGoal, newGame } =
+    useGameStore();
 
   const form = useForm({
     defaultValues: { newPlayer: "" },
     onSubmit: ({ value }) => {
       addPlayer(value.newPlayer);
       form.reset();
+    },
+  });
+
+  const pointsForm = useForm({
+    defaultValues: { goal: String(goal) },
+    onSubmit: ({ value }) => {
+      setGoal(Number(value.goal));
+      newGame();
     },
   });
 
@@ -73,7 +82,7 @@ export default function StartScreen() {
           </Button>
         </form>
 
-        <div className="grow divide-y-2">
+        <div className="divide-y-2">
           {players.map((player) => (
             <div
               key={player.name}
@@ -92,21 +101,63 @@ export default function StartScreen() {
           ))}
         </div>
 
-        {players.length >= 2 ? (
-          <Button onClick={newGame} className="w-full">
-            <RocketIcon strokeWidth={2.25} />
-            Spiel starten
-          </Button>
-        ) : (
-          <Alert variant="destructive">
-            <AlertTriangleIcon strokeWidth={2.5} />
-            <AlertTitle>Zu wenige Spieler</AlertTitle>
-            <AlertDescription>
-              Füge mindestens zwei Spieler hinzu, um ein Spiel starten zu
-              können.
-            </AlertDescription>
-          </Alert>
-        )}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            pointsForm.handleSubmit(e);
+          }}
+          className="flex grow flex-col justify-between"
+        >
+          <pointsForm.Field
+            name="goal"
+            validators={{
+              onChangeAsync: ({ value }) =>
+                !value
+                  ? "Bitte gib einen Wert an."
+                  : isNaN(Number(value))
+                    ? "Bitte gib einen gültigen Wert an."
+                    : undefined,
+              onChangeAsyncDebounceMs: 200,
+            }}
+            children={(field) => (
+              <div className="grow">
+                <div className="space-y-1">
+                  <Label htmlFor={field.name}>Punkteziel</Label>
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    type="number"
+                    inputMode="numeric"
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                  />
+                </div>
+                {field.state.meta.isTouched && !field.state.meta.isValid ? (
+                  <em className="text-destructive text-sm">
+                    {field.state.meta.errors.join(", ")}
+                  </em>
+                ) : null}
+              </div>
+            )}
+          />
+          {players.length >= 2 ? (
+            <Button type="submit" className="w-full">
+              <RocketIcon strokeWidth={2.25} />
+              Spiel starten
+            </Button>
+          ) : (
+            <Alert variant="destructive">
+              <AlertTriangleIcon strokeWidth={2.5} />
+              <AlertTitle>Zu wenige Spieler</AlertTitle>
+              <AlertDescription>
+                Füge mindestens zwei Spieler hinzu, um ein Spiel starten zu
+                können.
+              </AlertDescription>
+            </Alert>
+          )}
+        </form>
       </div>
     </Layout>
   );

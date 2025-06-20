@@ -1,12 +1,7 @@
-import { Link, Navigate } from "@tanstack/react-router";
-import {
-  BanIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  PlusIcon,
-} from "lucide-react";
+import { Fireworks } from "@fireworks-js/react";
+import { BanIcon, ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGameStore } from "../-lib/store";
 import Card from "./card";
 import PlayerDialog from "./player-dialog";
@@ -25,47 +20,23 @@ import Layout from "@/components/layout";
 import cover from "@/assets/tutto/cover.jpeg";
 
 export default function GameScreen() {
-  const { players, currentCard, endGame, cards, updateCurrentCard } =
+  const { players, currentCard, goal, endGame, updateCurrentCard } =
     useGameStore();
   const [direction, setDirection] = useState<"forwards" | "backwards">(
     "forwards"
   );
+  const [showFireworks, setShowFireworks] = useState(false);
 
-  if (currentCard === null || cards.length === 0) {
-    return <Navigate to="/" replace />;
-  }
+  useEffect(() => {
+    if (showFireworks) {
+      setTimeout(() => {
+        setShowFireworks(false);
+      }, 6000);
+    }
+  }, [showFireworks]);
 
-  if (currentCard >= cards.length) {
-    return (
-      <Layout headerTitle="Tutto" headerInfoLink="/downloads/tutto.pdf">
-        <div className="mx-auto flex w-full max-w-md grow flex-col">
-          <div className="flex grow items-center justify-center">
-            <p className="text-4xl font-medium">Spiel beendet</p>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <Button
-              variant="secondary"
-              onClick={() => {
-                setDirection("forwards");
-                setTimeout(() => {
-                  updateCurrentCard(currentCard - 1);
-                }, 0);
-              }}
-              disabled={currentCard === 0}
-            >
-              <ChevronLeftIcon strokeWidth={2.25} />
-              Zurück
-            </Button>
-            <Button asChild>
-              <Link to="/" replace>
-                <PlusIcon strokeWidth={2.25} />
-                Neues Spiel
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </Layout>
-    );
+  if (!currentCard) {
+    return null;
   }
 
   return (
@@ -139,7 +110,10 @@ export default function GameScreen() {
         <div className="flex grow flex-col divide-y-2">
           {players.map((player) => (
             <div key={player.name} className="py-0.5">
-              <PlayerDialog player={player} />
+              <PlayerDialog
+                player={player}
+                onAchievedGoal={() => setShowFireworks(true)}
+              />
             </div>
           ))}
         </div>
@@ -148,7 +122,7 @@ export default function GameScreen() {
             <Button
               variant={
                 players.some(
-                  (p) => p.score.reduce((acc, curr) => acc + curr, 0) >= 6000
+                  (p) => p.score.reduce((acc, curr) => acc + curr, 0) >= goal
                 )
                   ? "default"
                   : "secondary"
@@ -178,6 +152,19 @@ export default function GameScreen() {
           </DialogContent>
         </Dialog>
       </div>
+
+      <AnimatePresence>
+        {showFireworks && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="pointer-events-none absolute inset-0"
+          >
+            <Fireworks className="h-full" />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Layout>
   );
 }

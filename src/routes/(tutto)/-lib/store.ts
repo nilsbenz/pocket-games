@@ -7,8 +7,10 @@ interface TuttoState {
   players: Array<Player>;
   cards: Array<Card>;
   currentCard: number | null;
+  goal: number;
   addPlayer: (name: string) => void;
   deletePlayer: (name: string) => void;
+  setGoal: (goal: number) => void;
   newGame: () => void;
   updateCurrentCard: (index: number) => void;
   addScore: (playerName: string, score: number) => void;
@@ -21,6 +23,7 @@ export const useGameStore = create<TuttoState>()(
       players: [],
       cards: [],
       currentCard: null,
+      goal: 6000,
       addPlayerError: "",
       addPlayer: (name) => {
         set((state) => ({
@@ -31,6 +34,7 @@ export const useGameStore = create<TuttoState>()(
         set((state) => ({
           players: state.players.filter((p) => p.name !== name),
         })),
+      setGoal: (goal) => set({ goal }),
       newGame: () => {
         set((state) => ({
           cards: getShuffledCards(),

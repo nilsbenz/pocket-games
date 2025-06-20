@@ -15,14 +15,24 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 
-export default function PlayerDialog({ player }: { player: Player }) {
-  const { addScore } = useGameStore();
+export default function PlayerDialog({
+  player,
+  onAchievedGoal,
+}: {
+  player: Player;
+  onAchievedGoal: () => void;
+}) {
+  const { addScore, goal } = useGameStore();
 
   const form = useForm({
     defaultValues: { scoreInput: "" },
     onSubmit: ({ value }) => {
+      const prevScore = player.score.reduce((acc, curr) => acc + curr, 0);
       addScore(player.name, Number(value.scoreInput));
       form.reset();
+      if (prevScore < goal && prevScore + Number(value.scoreInput) >= goal) {
+        onAchievedGoal();
+      }
     },
   });
 
