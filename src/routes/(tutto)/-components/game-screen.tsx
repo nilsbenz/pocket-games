@@ -35,7 +35,7 @@ export default function GameScreen() {
     }
   }, [showFireworks]);
 
-  if (!currentCard) {
+  if (currentCard === null) {
     return null;
   }
 
