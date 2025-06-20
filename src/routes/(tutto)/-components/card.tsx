@@ -78,7 +78,6 @@ export default function Card({ index }: { index: number }) {
           className="bg-card focus-visible:ring-ring/50 relative flex aspect-[1024/733] w-full cursor-pointer items-center justify-center overflow-clip bg-cover bg-center transition-shadow focus:outline-none focus-visible:ring-[3px]"
           style={{ backgroundImage: `url(${images[card.variant]})` }}
         >
-          <div className="absolute inset-0 mask-radial-from-transparent mask-radial-from-50% mask-radial-to-black/80 mask-radial-to-75% backdrop-blur-xs" />
           <div className="border-background absolute -inset-[60px] rounded-[25%] border-[96px] blur-[16px]" />
           <p className="absolute bottom-2 left-1/2 -translate-x-1/2 text-3xl font-semibold">
             {card.displayName}
