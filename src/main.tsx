@@ -28,7 +28,7 @@ declare module "@tanstack/react-router" {
 
 const updateSW = registerSW({
   onNeedRefresh() {
-    if (confirm("New content available. Reload?")) {
+    if (confirm("Es gibt ein Update der App. Möchtest du neu laden?")) {
       updateSW(true);
     }
   },

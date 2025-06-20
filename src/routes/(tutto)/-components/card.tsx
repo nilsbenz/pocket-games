@@ -14,6 +14,17 @@ import {
 import { useGameStore } from "../-lib/store";
 import type { LucideIcon } from "lucide-react";
 import type { CardVariant } from "../-lib/types";
+import bonus200 from "@/assets/tutto/bonus200.jpeg";
+import bonus300 from "@/assets/tutto/bonus300.jpeg";
+import bonus400 from "@/assets/tutto/bonus400.jpeg";
+import bonus500 from "@/assets/tutto/bonus500.jpeg";
+import bonus600 from "@/assets/tutto/bonus600.jpeg";
+import firework from "@/assets/tutto/firework.jpeg";
+import plusMinus from "@/assets/tutto/plusminus.jpeg";
+import shamrock from "@/assets/tutto/shamrock.jpeg";
+import stop from "@/assets/tutto/stop.jpeg";
+import street from "@/assets/tutto/street.jpeg";
+import timesTwo from "@/assets/tutto/timestwo.jpeg";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,21 +36,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { cn } from "@/lib/utils";
-
-const colorClasses: Record<CardVariant, string> = {
-  street: "bg-neutral-300 text-neutral-900",
-  stop: "bg-rose-400 text-rose-950",
-  firework: "bg-purple-400 text-purple-950",
-  "plus-minus": "bg-cyan-600 text-cyan-950",
-  "times-two": "bg-orange-400 text-orange-950",
-  bonus200: "bg-amber-300 text-amber-950",
-  bonus300: "bg-amber-300 text-amber-950",
-  bonus400: "bg-amber-300 text-amber-950",
-  bonus500: "bg-amber-300 text-amber-950",
-  bonus600: "bg-amber-300 text-amber-950",
-  shamrock: "bg-emerald-400 text-emerald-950",
-};
 
 const icons: Record<CardVariant, LucideIcon> = {
   street: CarIcon,
@@ -55,18 +51,18 @@ const icons: Record<CardVariant, LucideIcon> = {
   shamrock: FlowerIcon,
 };
 
-const values: Record<CardVariant, string> = {
-  street: "2000",
-  stop: "",
-  firework: "",
-  "plus-minus": "1000",
-  "times-two": "2x",
-  bonus200: "200",
-  bonus300: "300",
-  bonus400: "400",
-  bonus500: "500",
-  bonus600: "600",
-  shamrock: "",
+const images: Record<CardVariant, string> = {
+  street,
+  stop,
+  firework,
+  "plus-minus": plusMinus,
+  "times-two": timesTwo,
+  bonus200,
+  bonus300,
+  bonus400,
+  bonus500,
+  bonus600,
+  shamrock,
 };
 
 export default function Card({ index }: { index: number }) {
@@ -79,20 +75,15 @@ export default function Card({ index }: { index: number }) {
     <Dialog>
       <DialogTrigger asChild>
         <button
-          className={cn(
-            "bg-card text-card-foreground focus-visible:ring-ring/50 relative flex aspect-video w-full items-center justify-center rounded-lg border-4 border-current shadow-md focus:outline-none focus-visible:ring-[3px]",
-            colorClasses[card.variant]
-          )}
+          className="bg-card focus-visible:ring-ring/50 relative flex aspect-[1024/733] w-full cursor-pointer items-center justify-center overflow-clip bg-cover bg-center transition-shadow focus:outline-none focus-visible:ring-[3px]"
+          style={{ backgroundImage: `url(${images[card.variant]})` }}
         >
-          <p className="absolute top-2 left-1/2 -translate-x-1/2 text-xl font-semibold">
+          <div className="absolute inset-0 mask-radial-from-transparent mask-radial-from-50% mask-radial-to-black/80 mask-radial-to-75% backdrop-blur-xs" />
+          <div className="border-background absolute -inset-[60px] rounded-[25%] border-[96px] blur-[16px]" />
+          <p className="absolute bottom-2 left-1/2 -translate-x-1/2 text-3xl font-semibold">
             {card.displayName}
           </p>
-          <div className="flex w-full items-center justify-between px-4">
-            <p className="text-xl font-semibold">{values[card.variant]}</p>
-            <Icon className="size-16 sm:size-20" strokeWidth={2.25} />
-            <p className="text-xl font-semibold">{values[card.variant]}</p>
-          </div>
-          <p className="absolute right-4 bottom-2 font-semibold tabular-nums opacity-60">
+          <p className="absolute top-2 right-4 font-semibold tabular-nums opacity-60">
             {index + 1} / {cards.length}
           </p>
         </button>
@@ -102,7 +93,9 @@ export default function Card({ index }: { index: number }) {
           <DialogTitle className="flex items-center gap-2">
             <Icon className="size-6" strokeWidth={2.25} /> {card.displayName}
           </DialogTitle>
-          <DialogDescription>{card.description}</DialogDescription>
+          <DialogDescription className="text-left">
+            {card.description}
+          </DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <DialogClose asChild>

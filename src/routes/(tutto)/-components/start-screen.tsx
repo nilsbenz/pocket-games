@@ -24,7 +24,7 @@ export default function StartScreen() {
   });
 
   return (
-    <Layout headerTitle="Tutto">
+    <Layout headerTitle="Tutto" headerInfoLink="/downloads/tutto.pdf">
       <div className="mx-auto flex w-full max-w-md grow flex-col space-y-8">
         <h2 className="text-center text-4xl font-medium">Tutto</h2>
         <form

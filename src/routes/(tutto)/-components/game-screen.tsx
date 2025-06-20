@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout";
+import cover from "@/assets/tutto/cover.jpeg";
 
 export default function GameScreen() {
   const { players, currentCard, endGame, cards, updateCurrentCard } =
@@ -36,7 +37,7 @@ export default function GameScreen() {
 
   if (currentCard >= cards.length) {
     return (
-      <Layout headerTitle="Tutto">
+      <Layout headerTitle="Tutto" headerInfoLink="/downloads/tutto.pdf">
         <div className="mx-auto flex w-full max-w-md grow flex-col">
           <div className="flex grow items-center justify-center">
             <p className="text-4xl font-medium">Spiel beendet</p>
@@ -68,32 +69,48 @@ export default function GameScreen() {
   }
 
   return (
-    <Layout headerTitle="Tutto">
+    <Layout headerTitle="Tutto" headerInfoLink="/downloads/tutto.pdf">
       <div className="mx-auto flex w-full max-w-md grow flex-col space-y-8">
         <div className="space-y-4">
-          <AnimatePresence mode="popLayout">
-            {currentCard >= 0 ? (
-              <motion.div
-                key={currentCard}
-                initial={{ opacity: 0, x: direction === "forwards" ? 160 : 0 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: direction === "forwards" ? 0 : 160 }}
-                transition={{
-                  duration: 0.4,
-                  ease: direction === "forwards" ? "backOut" : "backIn",
-                }}
-              >
-                <Card index={currentCard} />
-              </motion.div>
-            ) : (
-              <div className="bg-card text-card-foreground flex aspect-video items-center justify-center rounded-lg border-4">
-                <p className="text-xl font-semibold">Tutto</p>
-              </div>
-            )}
-          </AnimatePresence>
+          <div className="-mx-4 -mt-4">
+            <AnimatePresence mode="popLayout">
+              {currentCard >= 0 ? (
+                <motion.div
+                  key={currentCard}
+                  initial={{
+                    opacity: 0,
+                    x: direction === "forwards" ? 160 : 0,
+                  }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: direction === "forwards" ? 0 : 160 }}
+                  transition={{
+                    duration: 0.4,
+                    ease: direction === "forwards" ? "backOut" : "backIn",
+                  }}
+                >
+                  <Card index={currentCard} />
+                </motion.div>
+              ) : (
+                <button
+                  className="focus-visible:ring-ring/50 relative flex aspect-[1024/733] w-full cursor-pointer items-center justify-center overflow-clip bg-cover bg-center transition-shadow focus:outline-none focus-visible:ring-[3px]"
+                  style={{ backgroundImage: `url(${cover})` }}
+                  onClick={() => {
+                    setDirection("forwards");
+                    updateCurrentCard(0);
+                  }}
+                >
+                  <div className="border-background absolute -inset-[60px] rounded-[25%] border-[96px] blur-[16px]" />
+                  <p className="text-7xl font-semibold text-white">Tutto</p>
+                  <p className="absolute bottom-2 left-1/2 -translate-x-1/2 font-medium">
+                    Tippen, um zu starten
+                  </p>
+                </button>
+              )}
+            </AnimatePresence>
+          </div>
           <div className="grid grid-cols-2 gap-4">
             <Button
-              variant="secondary"
+              variant="ghost"
               onClick={() => {
                 setDirection("backwards");
                 setTimeout(() => {
@@ -106,7 +123,7 @@ export default function GameScreen() {
               Zurück
             </Button>
             <Button
-              variant="secondary"
+              variant="ghost"
               onClick={() => {
                 setDirection("forwards");
                 setTimeout(() => {
